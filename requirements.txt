@@ -1,0 +1,12 @@
+# Core LangGraph Dependencies
+langgraph>=0.2
+langchain
+
+# OpenAI LLM Integration (for clarity, validator, synthesis agents)
+openai>=1.0.0
+
+# Tavily Search API Integration (for research agent)
+tavily-python>=0.3.0
+
+# Environment Variables Management
+python-dotenv>=1.0.0

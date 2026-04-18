@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LangGraph Visualization</title>
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      mermaid.initialize({ startOnLoad: true, theme: 'forest' });
+    </script>
+</head>
+<body>
+    <h1>Multi-Agent Research Assistant - LangGraph</h1>
+    <div class="mermaid">
+    ---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([<p>__start__</p>]):::first
+	clarity(clarity)
+	research(research)
+	validator(validator)
+	synthesis(synthesis)
+	clarification(clarification)
+	__end__([<p>__end__</p>]):::last
+	__start__ --> clarity;
+	clarification --> clarity;
+	clarity -.-> clarification;
+	clarity -.-> research;
+	research -.-> synthesis;
+	research -.-> validator;
+	validator -.-> research;
+	validator -.-> synthesis;
+	synthesis --> __end__;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc
+
+    </div>
+</body>
+</html>
