@@ -14,18 +14,63 @@ load_dotenv()
 # --- END ENV SETUP ---
 
 from app.graph import build_graph
+from datetime import datetime
+import os
 
 graph = build_graph()
+
+def save_conversation_log(message_history, log_dir="conversation_logs"):
+    """
+    Saves conversation history to a timestamped text file.
+    
+    Args:
+        message_history: List of message dictionaries with 'role' and 'content'
+        log_dir: Directory to store conversation logs
+    """
+    # Create logs directory if it doesn't exist
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir)
+    
+    # Generate timestamp for filename
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"conversation_{timestamp}.txt"
+    filepath = os.path.join(log_dir, filename)
+    
+    # Write conversation to file
+    with open(filepath, "w", encoding="utf-8") as f:
+        f.write("=" * 80 + "\n")
+        f.write("Multi-Agent Research Assistant - Conversation Log\n")
+        f.write(f"Session Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+        f.write("=" * 80 + "\n\n")
+        
+        for i, msg in enumerate(message_history, 1):
+            role = msg.get("role", "unknown").capitalize()
+            content = msg.get("content", "")
+            f.write(f"[{i}] {role}:\n{content}\n\n")
+            f.write("-" * 80 + "\n\n")
+        
+        f.write("=" * 80 + "\n")
+        f.write(f"End of conversation - Total messages: {len(message_history)}\n")
+        f.write("=" * 80 + "\n")
+    
+    return filepath
 
 def run_chat():
     message_history = []
 
-    print("Multi-Agent Research Assistant (type 'exit' to quit)\n")
+    print("Multi-Agent Research Assistant (type 'exit' to quit)")
+    print("💾 Conversation will be automatically saved to conversation_logs/\n")
 
     while True:
         user_input = input("User: ")
 
         if user_input.lower() == "exit":
+            # Save conversation log before exiting
+            if message_history:
+                log_file = save_conversation_log(message_history)
+                print(f"\n✅ Conversation saved to: {log_file}")
+            else:
+                print("\n💬 No conversation to save (no messages exchanged)")
             break
 
         # RESET state for each new query to avoid contamination

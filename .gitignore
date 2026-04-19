@@ -65,6 +65,9 @@ docs/_build/
 # graph_visualization.png
 # graph_visual.html
 
+# Conversation logs (user chat sessions)
+conversation_logs/
+
 # Temporary files
 *.log
 *.tmp

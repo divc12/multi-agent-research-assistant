@@ -62,9 +62,14 @@ python main.py
 
 The application will start an interactive chat session. Type your questions about companies and type `exit` to quit.
 
+**💾 Note**: All conversations are automatically saved to `conversation_logs/` when you exit.
+
 ### Example Usage (with Tavily)
 
 ```
+Multi-Agent Research Assistant (type 'exit' to quit)
+💾 Conversation will be automatically saved to conversation_logs/
+
 User: What's going on with Apple?
 Assistant: Apple continues strong iPhone sales, especially in China, and faces 
 challenges like supply chain complexities and AI integration. The company navigates 
@@ -79,6 +84,8 @@ User: What about their stock price?
 Assistant: Regarding Apple: [Real-time stock information from Tavily]
 
 User: exit
+
+✅ Conversation saved to: conversation_logs/conversation_20260418_143022.txt
 ```
 
 **Note**: Without Tavily API key, system falls back to mock data for Apple, Tesla, and Microsoft.
@@ -156,8 +163,10 @@ multi-agent-research-assistant/
 ├── TESTING.md                   # Mock data testing guide
 ├── API_SETUP.md                 # API integration & configuration guide
 ├── .env.example                 # Environment variables template
+├── .gitignore                   # Git ignore rules
 ├── graph.mmd                    # Mermaid graph visualization
 ├── visualize_langgraph.ipynb    # Interactive graph visualization notebook
+├── conversation_logs/           # Auto-saved chat sessions (gitignored)
 ├── app/
 │   ├── graph.py                # LangGraph definition and routing
 │   ├── state.py                # State schema (ResearchState)
@@ -272,6 +281,12 @@ See [TESTING.md](TESTING.md) for detailed test cases and validation criteria.
    - Easy toggle between production and demo modes
    - Domain filtering, keyword lists, and thresholds all configurable
    - See [API_SETUP.md](API_SETUP.md) for configuration guide
+
+7. **Automatic Conversation Logging**
+   - All chat sessions automatically saved to timestamped text files
+   - Logs stored in `conversation_logs/` directory
+   - Includes full conversation history with timestamps
+   - Useful for review, testing, and documentation purposes
 
 ### Potential Future Enhancements
 
