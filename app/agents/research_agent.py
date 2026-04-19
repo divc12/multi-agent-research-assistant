@@ -34,6 +34,10 @@ def research_agent(state: dict) -> dict:
         Dictionary with research_findings and confidence_score
     """
     
+    # Log research attempt number
+    attempt_num = state.get("research_attempts", 0) + 1
+    print(f"\n[RESEARCH] Attempt {attempt_num}/3 - Searching for: {state['query'][:50]}...")
+    
     # --- TRY TAVILY SEARCH FIRST, FALLBACK TO MOCK DATA ---
     try:
         query = state["query"]

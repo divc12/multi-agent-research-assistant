@@ -90,8 +90,11 @@ def validator_agent(state: dict) -> dict:
     findings = state.get("research_findings", {})
     confidence = state.get("confidence_score", 0)
     
+    print(f"[VALIDATOR] Attempt {attempts}/3 - Validating results...")
+    
     # If error in findings, mark as insufficient
     if "error" in findings:
+        print(f"[VALIDATOR] ❌ Error in findings - Retry needed (Attempt {attempts}/3)")
         return {
             "validation_result": "insufficient",
             "research_attempts": attempts
@@ -100,7 +103,11 @@ def validator_agent(state: dict) -> dict:
     # Base confidence check - use dynamic threshold based on mode
     threshold = STRICT_CONFIDENCE_THRESHOLD if STRICT_VALIDATION_MODE else NORMAL_CONFIDENCE_THRESHOLD
     if confidence < threshold:
-        print(f"[VALIDATOR] Confidence {confidence} < {threshold} ({'STRICT' if STRICT_VALIDATION_MODE else 'NORMAL'} mode)")
+        print(f"[VALIDATOR] ❌ Confidence {confidence:.1f} < {threshold} ({'STRICT' if STRICT_VALIDATION_MODE else 'NORMAL'} mode)")
+        if attempts < 3:
+            print(f"[VALIDATOR] 🔄 Retry needed (Attempt {attempts}/3)")
+        else:
+            print(f"[VALIDATOR] ⚠️ Max retries reached (3/3) - Proceeding with available data")
         return {
             "validation_result": "insufficient",
             "research_attempts": attempts
@@ -136,12 +143,18 @@ def validator_agent(state: dict) -> dict:
     
     # Mark as insufficient if key information is missing
     if missing_info:
+        print(f"[VALIDATOR] ❌ Missing required fields: {', '.join(missing_info)}")
+        if attempts < 3:
+            print(f"[VALIDATOR] 🔄 Retry needed (Attempt {attempts}/3)")
+        else:
+            print(f"[VALIDATOR] ⚠️ Max retries reached (3/3) - Proceeding with available data")
         return {
             "validation_result": "insufficient",
             "research_attempts": attempts
         }
     
     # All checks passed
+    print(f"[VALIDATOR] ✅ Validation passed - Confidence {confidence:.1f} ≥ {threshold}")
     return {
         "validation_result": "sufficient",
         "research_attempts": attempts
